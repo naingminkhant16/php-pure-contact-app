@@ -1,7 +1,7 @@
 <?php require "header.php" ?>
-<div class="container" style="max-width: 600px;">
-    <div class="row">
-        <div class="col-12">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-4">
             <div class="my-3 d-flex justify-content-between align-items-center">
                 <div>
                     <h5>Account Register</h5>
@@ -10,13 +10,11 @@
                 <a href="login.php" class="btn btn-outline-primary">Login</a>
             </div>
             <?php
-            if (!empty($_SESSION['flashMessage'])) {
-                echo alert(showFlashMessage(), "success");
-            }
+           
 
             if (isset($_POST['register'])) {
                 if (register()) {
-                    echo redirect("register.php");
+                    echo redirect("login.php");
                 }
             }
             ?>

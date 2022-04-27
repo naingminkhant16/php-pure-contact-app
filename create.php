@@ -1,4 +1,7 @@
-<?php require "header.php" ?>
+<?php require "header.php";
+if (empty($_SESSION['auth'])) {
+    echo redirect("login.php");
+} ?>
 <div class="container" style="max-width: 600px;">
     <div class="row">
         <div class="col-12">
@@ -7,14 +10,14 @@
                     <h5>My Contact</h5>
                     <span class="small">home/create contact</span>
                 </div>
-                <a href="index.php" class="btn btn-outline-primary">Home</a>
+                <a href="dashboard.php" class="btn btn-outline-primary">Home</a>
             </div>
             <?php
-            
+
             if (isset($_POST['create'])) {
                 if (contactCreate()) {
                     // echo alert("Contact successfully created.", "success");
-                    echo redirect("index.php");
+                    echo redirect("dashboard.php");
                 }
                 // else echo alert("Fail", "danger");
             }

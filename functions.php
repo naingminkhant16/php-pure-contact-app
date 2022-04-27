@@ -6,7 +6,7 @@ function alert($message, $color)
 
 function contacts()
 {
-    $sql = "SELECT * FROM contacts";
+    $sql = "SELECT * FROM contacts WHERE user_id={$_SESSION['auth']->id}";
     $query = mysqli_query($GLOBALS['connect'], $sql);
     $contacts = [];
     while ($row = mysqli_fetch_object($query)) {
@@ -88,7 +88,8 @@ function contactCreate()
     if (!empty($_SESSION['error'])) {
         return false;
     }
-    $sql = "INSERT INTO contacts(name,phone) VALUES ('$name','$phone')";
+    $user_id = $_SESSION['auth']->id;
+    $sql = "INSERT INTO contacts(user_id,name,phone) VALUES ('$user_id','$name','$phone')";
     if (!mysqli_query($GLOBALS['connect'], $sql)) {
         return false;
     }
@@ -100,8 +101,8 @@ function contactCreate()
 function contactDelete()
 {
     $id = $_POST['id'];
-
-    $sql = "DELETE FROM contacts WHERE id='$id'";
+$user_id=$_SESSION['auth']->id;
+    $sql = "DELETE FROM contacts WHERE id='$id' AND user_id='$user_id'";
     if (!mysqli_query($GLOBALS['connect'], $sql)) {
         return false;
     }
@@ -172,5 +173,57 @@ function register()
     }
     unset($_POST);
     storeFlashMessage("Register successful.Login now.");
+    return true;
+}
+
+function login()
+{
+
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+
+    if (empty($email)) {
+        storeErr("email", "email is empty");
+    } else {
+        if (strlen($email) < 3) {
+            storeErr("email", "email is too short");
+        } else {
+            if (strlen($email) > 20) {
+                storeErr("email", "email is too long");
+            } else {
+                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    storeErr("email", "Invalid Email format");
+                }
+            }
+        }
+    }
+
+    if (empty($password)) {
+        storeErr("password", "password is empty");
+    } else {
+        if (strlen($password) < 8) {
+            storeErr("password", "password is too short");
+        } else {
+            if (strlen($password) > 20) {
+                storeErr("password", "password is too long");
+            }
+        }
+    }
+    if (!empty($_SESSION['error'])) {
+        return "Email or Password wrong";
+    }
+    $sql = "SELECT * FROM users WHERE email='$email'";
+    $query = mysqli_query($GLOBALS['connect'], $sql);
+    $row = mysqli_fetch_object($query);
+
+    if (is_null($row)) {
+        return "Email or Password wrong";
+    };
+    if (!password_verify($password, $row->password)) {
+        return "Email or Password worng";
+    }
+    $_SESSION['auth'] = $row;
+
     return true;
 }
