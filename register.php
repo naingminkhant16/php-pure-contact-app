@@ -10,8 +10,6 @@
                 <a href="login.php" class="btn btn-outline-primary">Login</a>
             </div>
             <?php
-           
-
             if (isset($_POST['register'])) {
                 if (register()) {
                     echo redirect("login.php");
