@@ -13,7 +13,7 @@ if (empty($_SESSION['auth'])) {
                     <span class="small">home / login as <?= $_SESSION['auth']->name ?></span>
                 </div>
 
-                <a href="create.php" class="btn btn-outline-primary">Create</a>
+                <a href="create.php" class="btn btn-outline-primary"><i class="fas fa-plus"></i></a>
             </div>
             <?php
             if (!empty($_SESSION['flashMessage'])) {
@@ -32,24 +32,24 @@ if (empty($_SESSION['auth'])) {
 
             <ul class="list-group">
                 <?php foreach (contacts() as $contact) : ?>
-                    <li class="list-group-item">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex align-items-center">
-                                <input type="checkbox" class="me-2" form="bulk_delete" name="bulk_delete_ids[]" value="<?= $contact->id ?>">
-                                <div>
-                                    <p class="mb-0 h4"><?= $contact->name ?></p>
-                                    <p class="mb-0 text-black-50"><?= $contact->phone ?></p>
-                                </div>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <!-- <div class=""> -->
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="contact<?=$contact->id?>" form="bulk_delete" name="bulk_delete_ids[]" value="<?= $contact->id ?>">
+                                <label class="form-check-label" for="contact<?=$contact->id?>">
+                                    <?= $contact->name ?><br>
+                                    <span class="small text-black-50"><?= $contact->phone ?></span>
+                                </label>
                             </div>
                             <div class="">
-                                <a href="edit.php?id=<?= $contact->id ?>" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <a href="edit.php?id=<?= $contact->id ?>" class="btn btn-sm btn-outline-secondary"><i class="fas fa-pencil-alt"></i></a>
                                 <form action="" class="d-inline-block" method="POST">
                                     <input type="hidden" name="id" value="<?= $contact->id ?>">
-                                    <button name="del" onclick="return confirm('Are u sure u wanna delete?')" class="btn btn-sm btn-outline-danger">Delete</button>
-                                    <i class="fas fa-trash text-danger"></i>
+                                    <button name="del" onclick="return confirm('Are u sure u wanna delete?')" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash text-danger"></i></button>
+                                    
                                 </form>
                             </div>
-                        </div>
+                        <!-- </div> -->
                     </li>
                 <?php endforeach; ?>
             </ul>

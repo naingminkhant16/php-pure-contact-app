@@ -138,7 +138,6 @@ function contactBulkDelete()
     if (!mysqli_query($GLOBALS['connect'], $sql)) {
         return false;
     }
-    // storeFlashMessage("Successfully deleted contacts");
     return true;
 }
 function register()
